@@ -1,0 +1,54 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block title %}Dashboard{% endblock title %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="display-4 text-primary text-center mb-5">DASHBOARD</h2>
+            <a class="btn btn-success mb-4" href="{% url 'addblog' %}">Add A Blog</a>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title text-center text-primary mb-4">Show Blog Content</h3>
+                    {% if blogs %}
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered">
+                                <thead class="bg-primary text-white">
+                                    <tr>
+                                        <th scope="col" class="text-center">ID</th>
+                                        <th scope="col" class="text-center">Title</th>
+                                        <th scope="col" class="text-center">Description</th>
+                                        <th scope="col" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for blg in blogs %}
+                                        <tr>
+                                            <td class="text-center">{{ blg.id }}</td>
+                                            <td>{{ blg.title }}</td>
+                                            <td>{{ blg.cont }}</td>
+                                            <td class="text-center">
+                                                <a href="{% url 'updateblog' blg.id %}" class="btn btn-warning btn-sm">Edit</a>
+                                                {% if perms.blog.delete_blog %}
+                                                    <form action="{% url 'deleteblog' blg.id %}" method="post" class="d-inline">
+                                                        {% csrf_token %}
+                                                        <input type="submit" class="btn btn-danger btn-sm" value="Delete">
+                                                    </form>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <h4 class="text-center alert alert-warning">NO Records!</h4>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

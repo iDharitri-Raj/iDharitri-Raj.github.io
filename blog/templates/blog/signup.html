@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block title %}SIGNUP{% endblock title %}
+{% block content %}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="text-center mb-5">
+            <h2 class="display-4 text-primary">SIGN UP</h2>
+            </div>
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-primary text-center" role="alert">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+            <form action="" method="POST" novalidate>
+                {% csrf_token %}
+                {% for fm in form %}
+                <div class="form-group">
+                    <label class="text-dark">{{ fm.label_tag }}</label>
+                    {{ fm }} <small class="text-danger">{{ fm.errors|striptags }}</small>
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+                {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                <p class="alert alert-danger my-4">{{ error }}</p>
+                {% endfor %}
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
